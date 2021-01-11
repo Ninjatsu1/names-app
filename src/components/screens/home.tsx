@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Button, Grid, Paper, Card, CardContent, CardActions, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Container, AppBar, Toolbar } from "@material-ui/core";
+import { Typography, Grid, Card, CardContent, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, AppBar, Toolbar } from "@material-ui/core";
 
 /**
  * Props
@@ -11,8 +11,6 @@ interface Props { }
  */
 interface State {
   data: any;
-  name: string;
-  popularity: number
 }
 
 
@@ -25,15 +23,12 @@ class Home extends React.Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.state = {
-      data: [],
-      name: "",
-      popularity: 0
+      data: []
     }
   }
   public render = () => {
     return (
       <>
-
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6">
@@ -79,7 +74,6 @@ class Home extends React.Component<Props, State> {
             </Card>
           </Grid>
         </Grid>
-
       </>
     )
   }
@@ -93,18 +87,15 @@ class Home extends React.Component<Props, State> {
           'Accept': 'application/json'
         }
       }
-    )
-      .then((response) => {
-        //console.log(response)
-        return response.json();
+    ).then((response) => {
+      return response.json();
+    }).then((namesData) => {
+      let obj = namesData.names;
+      obj.sort((a: any, b: any) => b.amount - a.amount);
+      this.setState({
+        data: obj
       })
-      .then((namesData) => {
-        let obj = namesData.names;
-        obj.sort((a: any, b: any) => b.amount - a.amount);
-        this.setState({
-          data: obj
-        })
-      });
+    });
   }
 }
 export default Home;
